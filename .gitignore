@@ -4,3 +4,7 @@ out
 .idea
 .vs
 .vscode
+
+SFML/sfml-install/
+SFML/sfml-build/
+SFML/sfml-source/
