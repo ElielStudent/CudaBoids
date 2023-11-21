@@ -10,7 +10,7 @@ set(SFML_DIR ${PROJECT_SOURCE_DIR}/SFML/sfml-install/lib/cmake/SFML/)
 find_package(SFML 2.6.1 COMPONENTS graphics window system REQUIRED)
 include_directories("include/")
 
-add_executable(CMakeSFMLProject src/main.cpp )
+add_executable(CMakeSFMLProject src/main.cpp "include/Boid.h" "include/LogicEntity.h" "include/GameAsset.h" "include/Sprite.h" "src/Boid.cpp" )
 
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-window sfml-system)
 
