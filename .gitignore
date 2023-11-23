@@ -5,6 +5,6 @@ out
 .vs
 .vscode
 
-SFML/sfml-install/
-SFML/sfml-build/
-SFML/sfml-source/
+lib/SFML/sfml-install/
+lib/SFML/sfml-build/
+lib/SFML/sfml-source/
