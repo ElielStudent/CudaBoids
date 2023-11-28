@@ -15,7 +15,7 @@ private:
 	float sightRadius_; //Radius of area boid can "see" other boids
 	sf::FloatRect boundaryRect_;
 
-	std::vector<std::shared_ptr<Boid>> closeBoids_;
+	std::vector<std::weak_ptr<Boid>> closeBoids_;
 
 	void evadeBoundary();
 public:
@@ -31,7 +31,7 @@ public:
 	float sightRadius() { return sightRadius_; }
 	sf::CircleShape sprite() { return sprite_; }
 
-	void setCloseBoids(std::vector<std::shared_ptr<Boid>> closeBoids) {
-		this->closeBoids_ = std::vector<std::shared_ptr<Boid>>(closeBoids);
+	void setCloseBoids(std::vector<std::weak_ptr<Boid>> closeBoids) {
+		this->closeBoids_ = std::vector<std::weak_ptr<Boid>>(closeBoids);
 	}
 };

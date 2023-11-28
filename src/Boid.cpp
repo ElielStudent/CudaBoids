@@ -3,16 +3,16 @@
 
 using namespace  sf;
 
-const int BOID_SIZE = 10;
-const float SEPARATION_RANGE = 8;
-const float TURNFACTOR = 0.1;
-const float SEPARATION_FORCE = 0.05f;
-const float ALIGNMENT_FORCE = 0.05f;
+const int BOID_SIZE = 6;
+const float SEPARATION_RANGE = 15;
+const float TURNFACTOR = 25;
+const float SEPARATION_FORCE = 0.2;
+const float ALIGNMENT_FORCE = 0.1f;
 const float COHESION_FORCE = 0.0005f;
-const float MAXSPEED = 0.1f;
-const float MINSPEED = 0.1f;
+const float MAXSPEED = 420;
+const float MINSPEED = 250;
 
-Boid::Boid(int id, Vector2<float> position, float sightRadius, float speed, sf::FloatRect boundaryRect) :
+Boid::Boid(int id, Vector2<float> position, float sightRadius, float speed= MINSPEED, sf::FloatRect boundaryRect) :
 	id_(id), position_(position), sightRadius_(sightRadius), speed_(speed), boundaryRect_(boundaryRect) {
 	float direction_x = static_cast<float>(std::rand()) / RAND_MAX;
 	float direction_y = static_cast<float>(std::rand()) / RAND_MAX;
@@ -28,17 +28,18 @@ Boid::Boid(int id, Vector2<float> position, float sightRadius, float speed, sf::
 
 
 void Boid::move(float deltaTime) {
-	this->direction_ = this->nextDirection_;
+	this->evadeBoundary();
+	this->direction_ = this->direction_;
 
-	Vector2f velocity = this->speed_ * this->direction_;
-
-	float currentSpeed = fastMagnitudeAprox(velocity.x, velocity.y);
-
-	if (currentSpeed) {
-
+	float magnitude = sqrt((this->direction_.x * this->direction_.x) + (this->direction_.y * this->direction_.y));
+	if (magnitude > MAXSPEED) {
+		this->direction_ = (this->direction_ /magnitude ) * MAXSPEED;
+	}
+	else if (magnitude < MINSPEED) {
+		this->direction_ = (this->direction_ /magnitude) * MINSPEED;
 	}
 
-	this->position_ += velocity * deltaTime;
+	this->position_ += this->direction_ * deltaTime;
 
 	this->sprite_.setRotation(atan2f(this->direction_.x, -this->direction_.y) * (180 / 3.1415f));
 	this->sprite_.setPosition(this->position_);
@@ -47,49 +48,46 @@ void Boid::move(float deltaTime) {
 
 void Boid::evadeBoundary() {
 	if (position_.x < boundaryRect_.left) {
-		this->nextDirection_.x += TURNFACTOR;
+		this->direction_.x += TURNFACTOR;
 	}
 	else if (position_.x > boundaryRect_.width) {
-		this->nextDirection_.x -= TURNFACTOR;
+		this->direction_.x -= TURNFACTOR;
 	}
 	if (position_.y < boundaryRect_.top) {
-		this->nextDirection_.y += TURNFACTOR;
+		this->direction_.y += TURNFACTOR;
 	}
 	else if (position_.y > boundaryRect_.height) {
-		this->nextDirection_.y -= TURNFACTOR;
+		this->direction_.y -= TURNFACTOR;
 	}
 }
 
 void Boid::calculateDirection() {
-	this->evadeBoundary();
-
 	sf::Vector2f alignment(0, 0);	//The average direction of boids around you
 	sf::Vector2f cohesion(0, 0);	//The average position of boids around you
 	sf::Vector2f separation(0, 0);	//The separation force of boids close to you
 
 	int visibleBoidsCount = closeBoids_.size();
-	int separationBoidsCount = 0;
 
-	for (auto it = begin(closeBoids_); it != end(closeBoids_); ++it) {
-		std::shared_ptr<Boid> otherBoid = *it;
+	for (auto it = closeBoids_.begin(); it != closeBoids_.end(); ++it) {
+		std::shared_ptr<Boid> otherBoid = (*it).lock();
 
 		sf::Vector2f otherPosition = otherBoid->position();
 		alignment += otherBoid->direction();
 		cohesion += otherPosition;
+
 		if (arePointsInRadiusRange(this->position_, otherPosition, SEPARATION_RANGE)) {
 			separation += this->position_ - otherPosition;
-			separationBoidsCount++;
 		}
 	}
 
-	this->nextDirection_ += separation * SEPARATION_FORCE;
+	this->direction_ += separation * SEPARATION_FORCE;
 
 	if (visibleBoidsCount > 0) {
 		sf::Vector2f avgAlignment = alignment / (float)visibleBoidsCount;
-		this->nextDirection_ += (avgAlignment - this->direction_) * ALIGNMENT_FORCE;
+		this->direction_ += (avgAlignment - this->direction_) * ALIGNMENT_FORCE;
 
 		sf::Vector2f avgCohesion = cohesion / (float)visibleBoidsCount;
-		this->nextDirection_ += (avgCohesion - this->position_) * COHESION_FORCE;
+		this->direction_ += (avgCohesion - this->position_) * COHESION_FORCE;
 	}
 }
 
