@@ -1,5 +1,4 @@
 #include "Boid.h"
-#include "VectorUtils.h"
 
 using namespace  sf;
 
@@ -12,12 +11,12 @@ const float COHESION_FORCE = 0.0005f;
 const float MAXSPEED = 420;
 const float MINSPEED = 250;
 
-Boid::Boid(int id, Vector2<float> position, float sightRadius, float speed= MINSPEED, sf::FloatRect boundaryRect) :
-	id_(id), position_(position), sightRadius_(sightRadius), speed_(speed), boundaryRect_(boundaryRect) {
+
+Boid::Boid(int id, Vector2<float> position, float sightRadius, sf::FloatRect boundaryRect) :
+	id_(id), position_(position),sightRadius_(sightRadius), boundary_(boundaryRect) {
 	float direction_x = static_cast<float>(std::rand()) / RAND_MAX;
 	float direction_y = static_cast<float>(std::rand()) / RAND_MAX;
 	this->direction_ = Vector2<float>(direction_x, direction_y);
-	this->nextDirection_ = this->direction_;
 
 	this->sprite_.setRotation(atan2f(this->direction_.x, -this->direction_.y) * (180 / 3.1415f));
 	this->sprite_ = sf::CircleShape(BOID_SIZE, 3);
@@ -29,7 +28,6 @@ Boid::Boid(int id, Vector2<float> position, float sightRadius, float speed= MINS
 
 void Boid::move(float deltaTime) {
 	this->evadeBoundary();
-	this->direction_ = this->direction_;
 
 	float magnitude = sqrt((this->direction_.x * this->direction_.x) + (this->direction_.y * this->direction_.y));
 	if (magnitude > MAXSPEED) {
@@ -47,16 +45,16 @@ void Boid::move(float deltaTime) {
 
 
 void Boid::evadeBoundary() {
-	if (position_.x < boundaryRect_.left) {
+	if (position_.x < boundary_.left) {
 		this->direction_.x += TURNFACTOR;
 	}
-	else if (position_.x > boundaryRect_.width) {
+	else if (position_.x > boundary_.width) {
 		this->direction_.x -= TURNFACTOR;
 	}
-	if (position_.y < boundaryRect_.top) {
+	if (position_.y < boundary_.top) {
 		this->direction_.y += TURNFACTOR;
 	}
-	else if (position_.y > boundaryRect_.height) {
+	else if (position_.y > boundary_.height) {
 		this->direction_.y -= TURNFACTOR;
 	}
 }
