@@ -1,5 +1,5 @@
 #pragma once
-#include "Boid.h"
+#include <Boid.h>
 
 class NeighborSearchStrategy {
 public:

@@ -10,7 +10,7 @@ set(SFML_DIR ${PROJECT_SOURCE_DIR}/lib/SFML/sfml-install/lib/cmake/SFML/)
 find_package(SFML 2.6.1 COMPONENTS graphics window system REQUIRED)
 include_directories("include/")
 
-add_executable(CMakeSFMLProject src/main.cpp   "include/GameAsset.h"      "include/Boid.h" "src/Boid.cpp" "include/VectorUtils.h" "src/VectorUtils.cpp" "src/Flock.cpp" "include/Flock.h" "include/NeighborSearchStrategy.h" "src/NeighborSearchStrategy.cpp" "include/NaiveSearchStrategy.h" "src/NaiveSearchStrategy.cpp")
+add_executable(CMakeSFMLProject src/main.cpp   "include/GameAsset.h"      "include/Boid.h" "src/Boid.cpp" "include/VectorUtils.h" "src/VectorUtils.cpp" "src/Flock.cpp" "include/Flock.h" "include/NeighborSearchStrategy.h" "src/NeighborSearchStrategy.cpp" "include/NaiveSearchStrategy.h" "src/NaiveSearchStrategy.cpp" "include/Game.h" "src/Game.cpp")
 
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-window sfml-system)
 

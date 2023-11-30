@@ -1,7 +1,7 @@
 #pragma once
-#include "GameAsset.h"
+#include <GameAsset.h>
 #include <SFML/Graphics.hpp>
-#include "VectorUtils.h"
+#include <VectorUtils.h>
 
 
 class Boid {

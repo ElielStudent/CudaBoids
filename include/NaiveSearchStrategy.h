@@ -1,6 +1,6 @@
 #pragma once
-#include "NeighborSearchStrategy.h"
-#include "VectorUtils.h"
+#include <NeighborSearchStrategy.h>
+#include <VectorUtils.h>
 
 class NaiveSearchStrategy :public NeighborSearchStrategy {
 public:

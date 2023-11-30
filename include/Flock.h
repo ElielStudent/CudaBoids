@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
-#include "Boid.h"
+#include <Boid.h>
 #include <vector>
-#include "NeighborSearchStrategy.h"
+#include <NeighborSearchStrategy.h>
 
 class Flock {
 private:
