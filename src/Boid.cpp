@@ -2,17 +2,7 @@
 
 using namespace  sf;
 
-const int BOID_SIZE = 6;
-const float SEPARATION_RANGE = 15;
-const float TURNFACTOR = 25;
-const float SEPARATION_FORCE = 0.2;
-const float ALIGNMENT_FORCE = 0.1f;
-const float COHESION_FORCE = 0.0005f;
-const float MAXSPEED = 420;
-const float MINSPEED = 250;
-
-
-Boid::Boid(int id, Vector2<float> position, float sightRadius, sf::FloatRect boundaryRect) :
+Boid::Boid(int id, Vector2f position, float sightRadius, sf::FloatRect boundaryRect) :
 	id_(id), position_(position),sightRadius_(sightRadius), boundary_(boundaryRect) {
 	float direction_x = static_cast<float>(std::rand()) / RAND_MAX;
 	float direction_y = static_cast<float>(std::rand()) / RAND_MAX;
