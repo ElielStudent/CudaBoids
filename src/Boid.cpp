@@ -63,7 +63,7 @@ void Boid::calculateDirection() {
 		alignment += otherBoid.direction();
 		cohesion += otherPosition;
 
-		if (arePointsInRadiusRange(this->position_, otherPosition, SEPARATION_RANGE)) {
+		if (VectorUtils::arePointsInRadiusRange(this->position_, otherPosition, SEPARATION_RANGE)) {
 			separation += this->position_ - otherPosition;
 		}
 	}
