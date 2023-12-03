@@ -53,8 +53,8 @@ void Flock::addBoid(sf::Vector2f boid_position)
 //Adds a boid to a random position in the game
 void Flock::addBoid()
 {
-	int xPos = (rand() % (int(boundary_.width - boundary_.left))) + boundary_.left;
-	int yPos = (rand() % (int(boundary_.height - boundary_.top))) + boundary_.top;
+	int xPos = (rand() % (int)(boundary_.width - boundary_.left + boundary_.left));
+	int yPos = (rand() % (int)(boundary_.height - boundary_.top + boundary_.top));
 
 	std::shared_ptr<Boid> boid = std::make_shared<Boid>(this->boids_.size(), sf::Vector2f(xPos, yPos), this->boidSightRadius_, this->boundary_);
 	this->boids_.push_back(boid);

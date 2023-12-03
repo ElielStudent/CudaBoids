@@ -33,8 +33,9 @@ void Game::start()
 		sf::Event event;
 		while (this->window_.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed) {
 				this->window_.close();
+			}
 			if (event.type == sf::Event::KeyReleased) {
 				if (event.key.code == sf::Keyboard::Space) {
 					this->flock_->addBoid(sf::Vector2f(this->gameBoundary_.width / 2 + this->gameBoundary_.left, this->gameBoundary_.height / 2 + this->gameBoundary_.top));
