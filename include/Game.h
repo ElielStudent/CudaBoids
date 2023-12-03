@@ -9,6 +9,9 @@ const float SIGHT_RADIUS = 35;
 const int STARTING_BOIDS = 20;
 
 class Game {
+public:
+	Game(int screen_width,int screen_height,std::unique_ptr<NeighborSearchStrategy>&& searchStrategy);
+	void start();
 private:
 	sf::RenderWindow window_;
 	sf::Clock gameClock_;
@@ -16,7 +19,4 @@ private:
 	sf::FloatRect gameBoundary_;
 	void Update();
 	void Draw();
-public:
-	Game(int screen_width,int screen_height,std::unique_ptr<NeighborSearchStrategy>&& searchStrategy);
-	void start();
 };
