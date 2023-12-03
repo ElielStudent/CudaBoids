@@ -20,11 +20,11 @@ public:
 	void updatePosition(float deltaTime);
 
 
-	int id() { return id_; }
-	sf::Vector2f position() { return position_; }
-	sf::Vector2f direction() { return direction_; }
-	float sightRadius() { return sightRadius_; }
-	sf::CircleShape sprite() { return sprite_; }
+	int id() const  { return id_; }
+	sf::Vector2f position() const { return position_; }
+	sf::Vector2f direction() const { return direction_; }
+	float sightRadius() const { return sightRadius_; }
+	sf::CircleShape sprite() const { return sprite_; }
 
 	void setCloseBoids(const std::vector<Boid&> closeBoids) {
 		this->closeBoids_ = std::vector<Boid&>(closeBoids);
