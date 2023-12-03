@@ -14,7 +14,7 @@ void Flock::updateBoids(float deltatime)
 	//Updatae the direction of all boids
 	for (auto it = this->boids_.begin(); it != this->boids_.end(); ++it) {
 		std::shared_ptr<Boid> boid = (*it);
-		boid->move(deltatime);
+		boid->updatePosition(deltatime);
 	}
 }
 
