@@ -13,11 +13,11 @@ void Game::Draw()
 
 }
 
-Game::Game(int screen_width, int screen_height,std::unique_ptr<NeighborSearchStrategy>&& searchStrategy):window_(sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "SFML works!"))
+Game::Game(int screen_width, int screen_height):window_(sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "SFML works!"))
 {
 	this->gameBoundary_ = sf::FloatRect(BORDER_SIZE, BORDER_SIZE, screen_width - BORDER_SIZE, screen_height - BORDER_SIZE);
-
-	this->flock_ = std::make_unique<Flock>(std::move(searchStrategy), SIGHT_RADIUS, this->gameBoundary_);
+	
+	this->flock_ = std::make_unique<Flock>(std::make_unique<NaiveSearchStrategy>(), SIGHT_RADIUS, this->gameBoundary_);
 
 	for (int i = 0; i < STARTING_BOIDS; i++) {
 		this->flock_->addBoid();
