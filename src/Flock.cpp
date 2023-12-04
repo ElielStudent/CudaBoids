@@ -2,6 +2,11 @@
 
 Flock::Flock(std::unique_ptr<NeighborSearchStrategy>&& searchStrategy, float boidSightRadius, sf::FloatRect boundary) :searchStrategy_(std::move(searchStrategy)), boidSightRadius_(boidSightRadius), boundary_(boundary) {}
 
+Flock::~Flock()
+{
+	this->clearBoids();
+}
+
 void Flock::updateBoids(float deltatime)
 {
 
@@ -59,4 +64,9 @@ void Flock::addBoid()
 
 	std::shared_ptr<Boid> boid = std::make_shared<Boid>(this->boids_.size(), sf::Vector2f(xPos, yPos), this->boidSightRadius_, this->boundary_);
 	this->boids_.push_back(boid);
+}
+
+void Flock::clearBoids()
+{
+	this->boids_.clear();
 }
