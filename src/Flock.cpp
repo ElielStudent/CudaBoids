@@ -1,17 +1,20 @@
 #include "Flock.h"
 
+Flock::Flock(std::unique_ptr<NeighborSearchStrategy>&& searchStrategy, float boidSightRadius, sf::FloatRect boundary) :searchStrategy_(std::move(searchStrategy)), boidSightRadius_(boidSightRadius), boundary_(boundary) {}
+
 void Flock::updateBoids(float deltatime)
 {
-	// Update the neighbors of all boids
-	this->searchStrategy_->setAllNeighbors();
 
-	//Updatae the direction of all boids
+	//Update the direction of all boids
 	for (auto it = this->boids_.begin(); it != this->boids_.end(); ++it) {
 		std::shared_ptr<Boid> boid = (*it);
-		boid->calculateDirection();
+
+		// Get the neighbor of the boid
+		std::vector<std::reference_wrapper<Boid>> closeBoids = this->searchStrategy_->getNeighborBoids(boids_,*boid);
+		boid->calculateDirection(closeBoids);
 	}
 
-	//Updatae the direction of all boids
+	//Update the direction of all boids
 	for (auto it = this->boids_.begin(); it != this->boids_.end(); ++it) {
 		std::shared_ptr<Boid> boid = (*it);
 		boid->updatePosition(deltatime);
@@ -39,7 +42,6 @@ void Flock::drawBoids(sf::RenderWindow& window)
 void Flock::addBoid(std::shared_ptr<Boid> boid)
 {
 	this->boids_.push_back(boid);
-	this->searchStrategy_->addBoid(boid);
 }
 
 //Adds a boid to a specific position in the game
@@ -47,7 +49,6 @@ void Flock::addBoid(sf::Vector2f boid_position)
 {
 	std::shared_ptr<Boid> boid = std::make_shared<Boid>(boids_.size(), sf::Vector2f(boid_position), this->boidSightRadius_, this->boundary_);
 	this->boids_.push_back(boid);
-	this->searchStrategy_->addBoid(boid);
 }
 
 //Adds a boid to a random position in the game
@@ -58,6 +59,4 @@ void Flock::addBoid()
 
 	std::shared_ptr<Boid> boid = std::make_shared<Boid>(this->boids_.size(), sf::Vector2f(xPos, yPos), this->boidSightRadius_, this->boundary_);
 	this->boids_.push_back(boid);
-	this->searchStrategy_->addBoid(boid);
-
 }

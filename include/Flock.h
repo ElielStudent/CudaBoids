@@ -6,7 +6,7 @@
 
 class Flock {
 public:
-	Flock(std::unique_ptr<NeighborSearchStrategy>&& searchStrategy, float boidSightRadius, sf::FloatRect boundary) :searchStrategy_(std::move(searchStrategy)), boidSightRadius_(boidSightRadius), boundary_(boundary) {}
+	Flock(std::unique_ptr<NeighborSearchStrategy>&& searchStrategy, float boidSightRadius, sf::FloatRect boundary);
 
 	void updateBoids(float deltatime);
 	void drawBoids(sf::RenderWindow& window);
