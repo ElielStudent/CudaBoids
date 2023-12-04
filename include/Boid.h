@@ -16,7 +16,7 @@ class Boid {
 public:
 	Boid(int id, sf::Vector2f position, float sightRadius, sf::FloatRect boundaryRect);
 
-	void calculateDirection();
+	void calculateDirection(std::vector<std::reference_wrapper<Boid>> closeBoids);
 	void updatePosition(float deltaTime);
 
 
@@ -25,10 +25,6 @@ public:
 	sf::Vector2f direction() const { return direction_; }
 	float sightRadius() const { return sightRadius_; }
 	sf::CircleShape sprite() const { return sprite_; }
-
-	void setCloseBoids(const std::vector<Boid&> closeBoids) {
-		this->closeBoids_ = std::vector<Boid&>(closeBoids);
-	}
 private:
 	int id_;
 	sf::CircleShape sprite_;
@@ -37,8 +33,6 @@ private:
 	sf::Vector2f position_;
 	float sightRadius_; //Radius of area boid can "see" other boids
 	sf::FloatRect boundary_;
-
-	std::vector<Boid&> closeBoids_;
 
 	void evadeBoundary();
 
