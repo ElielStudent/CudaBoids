@@ -4,7 +4,5 @@
 
 class NaiveSearchStrategy :public NeighborSearchStrategy {
 public:
-    NaiveSearchStrategy(std::vector<std::weak_ptr<Boid>> allBoids = {})
-        : NeighborSearchStrategy(allBoids) {    }
-	void setAllNeighbors();
-};  
+	std::vector<std::reference_wrapper<Boid>> getNeighborBoids(std::vector<std::shared_ptr<Boid>>& allBoids, Boid& originBoid) ;
+};

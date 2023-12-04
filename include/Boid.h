@@ -13,6 +13,18 @@ const float MAXSPEED = 420;
 const float MINSPEED = 250;
 
 class Boid {
+public:
+	Boid(int id, sf::Vector2f position, float sightRadius, sf::FloatRect boundaryRect);
+
+	void calculateDirection(std::vector<std::reference_wrapper<Boid>> closeBoids);
+	void updatePosition(float deltaTime);
+
+
+	int id() const  { return id_; }
+	sf::Vector2f position() const { return position_; }
+	sf::Vector2f direction() const { return direction_; }
+	float sightRadius() const { return sightRadius_; }
+	sf::CircleShape sprite() const { return sprite_; }
 private:
 	int id_;
 	sf::CircleShape sprite_;
@@ -22,23 +34,6 @@ private:
 	float sightRadius_; //Radius of area boid can "see" other boids
 	sf::FloatRect boundary_;
 
-	std::vector<std::weak_ptr<Boid>> closeBoids_;
-
 	void evadeBoundary();
-public:
-	Boid(int id, sf::Vector2f position, float sightRadius, sf::FloatRect boundaryRect);
-	
-	void calculateDirection();
-	void move(float deltaTime);
 
-
-	int id() { return id_; }
-	sf::Vector2f position() { return position_; }
-	sf::Vector2f direction() { return direction_; }
-	float sightRadius() { return sightRadius_; }
-	sf::CircleShape sprite() { return sprite_; }
-
-	void setCloseBoids(std::vector<std::weak_ptr<Boid>> closeBoids) {
-		this->closeBoids_ = std::vector<std::weak_ptr<Boid>>(closeBoids);
-	}
 };

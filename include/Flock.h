@@ -5,13 +5,8 @@
 #include <NeighborSearchStrategy.h>
 
 class Flock {
-private:
-	std::vector<std::shared_ptr<Boid>> boids_;
-	std::unique_ptr<NeighborSearchStrategy> searchStrategy_;
-	float boidSightRadius_;
-	sf::FloatRect boundary_;
 public:
-	Flock(std::unique_ptr<NeighborSearchStrategy> &&searchStrategy, float boidSightRadius, sf::FloatRect boundary) :searchStrategy_(std::move(searchStrategy)), boidSightRadius_(boidSightRadius), boundary_(boundary) {}
+	Flock(std::unique_ptr<NeighborSearchStrategy>&& searchStrategy, float boidSightRadius, sf::FloatRect boundary);
 
 	void updateBoids(float deltatime);
 	void drawBoids(sf::RenderWindow& window);
@@ -19,5 +14,10 @@ public:
 	void addBoid(sf::Vector2f boid_position);
 	void addBoid();
 
-	int getBoidCount() { return boids_.size(); }
+	int getBoidCount() const { return boids_.size(); }
+private:
+	std::vector<std::shared_ptr<Boid>> boids_;
+	std::unique_ptr<NeighborSearchStrategy> searchStrategy_;
+	float boidSightRadius_;
+	sf::FloatRect boundary_;
 };

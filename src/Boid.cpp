@@ -1,22 +1,21 @@
 #include "Boid.h"
 
-using namespace  sf;
 
-Boid::Boid(int id, Vector2f position, float sightRadius, sf::FloatRect boundaryRect) :
+Boid::Boid(int id, sf::Vector2f position, float sightRadius, sf::FloatRect boundaryRect) :
 	id_(id), position_(position),sightRadius_(sightRadius), boundary_(boundaryRect) {
-	float direction_x = static_cast<float>(std::rand()) / RAND_MAX;
-	float direction_y = static_cast<float>(std::rand()) / RAND_MAX;
-	this->direction_ = Vector2<float>(direction_x, direction_y);
+	float direction_x = (float)std::rand() / RAND_MAX;
+	float direction_y = (float)std::rand() / RAND_MAX;
+	this->direction_ = sf::Vector2f(direction_x, direction_y);
 
-	this->sprite_.setRotation(atan2f(this->direction_.x, -this->direction_.y) * (180 / 3.1415f));
 	this->sprite_ = sf::CircleShape(BOID_SIZE, 3);
+	this->sprite_.setRotation(atan2f(this->direction_.x, -this->direction_.y) * (180 / 3.1415f));
 	this->sprite_.setFillColor(sf::Color(0, 255, 0));
 	this->sprite_.setScale(1, 1.5);
 	this->sprite_.setOrigin(BOID_SIZE / 2, BOID_SIZE / 2);
 }
 
 
-void Boid::move(float deltaTime) {
+void Boid::updatePosition(float deltaTime) {
 	this->evadeBoundary();
 
 	float magnitude = sqrt((this->direction_.x * this->direction_.x) + (this->direction_.y * this->direction_.y));
@@ -49,21 +48,21 @@ void Boid::evadeBoundary() {
 	}
 }
 
-void Boid::calculateDirection() {
+void Boid::calculateDirection(std::vector<std::reference_wrapper<Boid>> closeBoids) {
 	sf::Vector2f alignment(0, 0);	//The average direction of boids around you
 	sf::Vector2f cohesion(0, 0);	//The average position of boids around you
 	sf::Vector2f separation(0, 0);	//The separation force of boids close to you
 
-	int visibleBoidsCount = closeBoids_.size();
+	int visibleBoidsCount = closeBoids.size();
 
-	for (auto it = closeBoids_.begin(); it != closeBoids_.end(); ++it) {
-		std::shared_ptr<Boid> otherBoid = (*it).lock();
+	for (auto it = closeBoids.begin(); it != closeBoids.end(); ++it) {
+		const Boid& otherBoid = (*it);
 
-		sf::Vector2f otherPosition = otherBoid->position();
-		alignment += otherBoid->direction();
+		sf::Vector2f otherPosition = otherBoid.position();
+		alignment += otherBoid.direction();
 		cohesion += otherPosition;
 
-		if (arePointsInRadiusRange(this->position_, otherPosition, SEPARATION_RANGE)) {
+		if (VectorUtils::arePointsInRadiusRange(this->position_, otherPosition, SEPARATION_RANGE)) {
 			separation += this->position_ - otherPosition;
 		}
 	}
