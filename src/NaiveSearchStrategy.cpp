@@ -1,19 +1,16 @@
 #include "NaiveSearchStrategy.h"
+std::vector<std::reference_wrapper<Boid>> NaiveSearchStrategy::getNeighborBoids(std::vector<std::shared_ptr<Boid>>& allBoids, Boid& originBoid){
+	std::vector<std::reference_wrapper<Boid>> closeBoids;
 
-void NaiveSearchStrategy::setAllNeighbors() 
-{
-	for (auto it = this->allBoids_.begin(); it != this->allBoids_.end(); ++it) {
-		std::shared_ptr<Boid> boid = it->lock();
-		std::vector<std::weak_ptr<Boid>> closeBoids;
-		float sightRadius = boid->sightRadius();
-		int boidId = boid->id();
+	float sightRadius = originBoid.sightRadius();
+	int boidId = originBoid.id();
 
-		for (auto itForBoid = this->allBoids_.begin(); itForBoid != this->allBoids_.end(); ++itForBoid) {
-			std::shared_ptr<Boid> boidToCheck = itForBoid->lock();
-			if (boidId != boidToCheck->id() && arePointsInRadiusRange(boid->position(), boidToCheck->position(), sightRadius)) {
-				closeBoids.push_back(std::weak_ptr<Boid>(boidToCheck));
-			}
+	for (auto itForBoid = allBoids.begin(); itForBoid != allBoids.end(); ++itForBoid) {
+		std::shared_ptr<Boid> boidToCheck = (*itForBoid);
+		if (boidId != boidToCheck->id() && VectorUtils::arePointsInRadiusRange(originBoid.position(), boidToCheck->position(), sightRadius)) {
+			closeBoids.push_back(*boidToCheck);
 		}
-		boid->setCloseBoids(closeBoids);
 	}
+	return closeBoids;
 }
+

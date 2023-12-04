@@ -3,10 +3,5 @@
 
 class NeighborSearchStrategy {
 public:
-	NeighborSearchStrategy(std::vector<std::weak_ptr<Boid>> allBoids);
-	virtual void setAllNeighbors() = 0;
-	void addBoid(std::weak_ptr<Boid> boid);
-	void setBoids(std::vector < std::weak_ptr<Boid>> newAllBoids);
-protected:
-	std::vector<std::weak_ptr<Boid>> allBoids_;
+	virtual std::vector<std::reference_wrapper<Boid>> getNeighborBoids(std::vector<std::shared_ptr<Boid>>& allBoids,Boid& originBoid)=0;
 };
